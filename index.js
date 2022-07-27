@@ -22,18 +22,16 @@ const server = http.createServer((req, res) => {
   });
   if (req.url === "/products" && req.method === "GET") {
     return res.end(JSON.stringify(products));
-  }
-  if (req.url === "/products" && req.method === "POST") {
+  } else if (req.url === "/products" && req.method === "POST") {
     let body = "";
     req.on("data", (chunk) => {
       body += chunk.toString();
       products.push(JSON.parse(body));
     });
     req.on("end", () => {
-      res.end(body);
+      return res.end(JSON.stringify(products));
     });
-  }
-  res.end(req.url);
+  } else return res.end(req.url);
 });
 
 server.listen(port, (err) => {
