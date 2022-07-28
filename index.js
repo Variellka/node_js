@@ -29,7 +29,8 @@ const server = http.createServer((req, res) => {
       products.push(JSON.parse(body));
     });
     req.on("end", () => {
-      return res.end(JSON.stringify(products));
+      res.writeHead(201);
+      return res.end();
     });
   } else return res.end(req.url);
 });
