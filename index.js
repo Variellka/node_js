@@ -1,5 +1,4 @@
-const http = require("http");
-const port = 3000;
+const express = require("express");
 
 const products = [
   {
@@ -16,26 +15,14 @@ const products = [
   },
 ];
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {
-    "Content-type": "application/json",
-  });
-  if (req.url === "/products" && req.method === "GET") {
-    return res.end(JSON.stringify(products));
-  } else if (req.url === "/products" && req.method === "POST") {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk.toString();
-      products.push(JSON.parse(body));
-    });
-    req.on("end", () => {
-      res.writeHead(201);
-      return res.end();
-    });
-  } else return res.end(req.url);
+const app = express();
+const port = 3000;
+
+app.get("/products", function (req, res) {
+  res.send(JSON.stringify(products));
 });
 
-server.listen(port, (err) => {
+app.listen(port, (err) => {
   if (err) {
     return console.log("something bad happened", err);
   }
