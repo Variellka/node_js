@@ -1,30 +1,27 @@
 const express = require("express");
-
-const products = [
-  {
-    displayName: "Cyberpank 2077",
-    price: "60$",
-  },
-  {
-    displayName: "SpongeBob SquarePants: Battle for Bikini Bottom – Rehydrated",
-    price: "40$",
-  },
-  {
-    displayName: "God Of War",
-    price: "50$",
-  },
-];
+const mongoose = require("mongoose");
+const Product = require("./db/product-model");
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
 app.get("/products", function (req, res) {
-  res.send(JSON.stringify(products));
+  Product.find({}, function (err, products) {
+    if (err) return console.log(err);
+    res.send(products);
+  });
 });
 
-app.listen(port, (err) => {
-  if (err) {
-    return console.log("something bad happened", err);
+const start = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://xenia:12345@cluster0.yfrsc6h.mongodb.net/?retryWrites=true&w=majority",
+      { useUnifiedTopology: true, useNewUrlParser: true }
+    );
+    app.listen(PORT, () => console.log(`server started on PORT ${PORT}`));
+  } catch (e) {
+    console.log(e);
   }
-  console.log(`server is listening on ${port}`);
-});
+};
+
+start();
