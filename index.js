@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Product = require("./db/product-model");
+require("dotenv").config();
 
 const app = express();
 const PORT = 3000;
@@ -12,16 +13,16 @@ app.get("/products", function (req, res) {
   });
 });
 
-const start = async () => {
-  try {
-    await mongoose.connect(
-      "mongodb+srv://xenia:12345@cluster0.yfrsc6h.mongodb.net/?retryWrites=true&w=majority",
-      { useUnifiedTopology: true, useNewUrlParser: true }
-    );
-    app.listen(PORT, () => console.log(`server started on PORT ${PORT}`));
-  } catch (e) {
-    console.log(e);
+mongoose.connect(
+  process.env.DATABASE_URL,
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  },
+  function (err) {
+    if (err) return console.log(err);
+    app.listen(3000, function () {
+      console.log(`server started on PORT ${PORT}`);
+    });
   }
-};
-
-start();
+);
