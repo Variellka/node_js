@@ -10,23 +10,25 @@ mongoose.connect(process.env.DATABASE_URL, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
+
 let db = mongoose.connection;
 db.on("error", (error) => {
   console.error("error in MongoDb connection: " + error);
+  mongoose.disconnect();
 });
 db.on("connected", () => {
-  console.log("Connected successfully");
+  console.log("MongoDB connected successfully");
+});
+db.on("disconnected", () => {
+  console.log("MongoDB disconnected");
 });
 
-//get отрабатывает даже если нет продуктов, но если есть ошибка - не отрабатывает вообще никак
 app.get("/products", async (req, res) => {
-  const products = await Product.find({});
-  console.log(products);
-  try {
-    res.send(products);
-  } catch (error) {
-    res.status(500).send(error);
+  if (db.readyState !== 1) {
+    res.send("something went wrong...");
   }
+  const products = await Product.find({});
+  res.send(products);
 });
 
 app.listen(3000, function () {
