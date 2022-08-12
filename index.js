@@ -1,30 +1,36 @@
 const express = require("express");
-
-const products = [
-  {
-    displayName: "Cyberpank 2077",
-    price: "60$",
-  },
-  {
-    displayName: "SpongeBob SquarePants: Battle for Bikini Bottom – Rehydrated",
-    price: "40$",
-  },
-  {
-    displayName: "God Of War",
-    price: "50$",
-  },
-];
+const mongoose = require("mongoose");
+const Product = require("./db/product-model");
+require("dotenv").config();
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-app.get("/products", function (req, res) {
-  res.send(JSON.stringify(products));
+mongoose.connect(process.env.DATABASE_URL, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
 });
 
-app.listen(port, (err) => {
-  if (err) {
-    return console.log("something bad happened", err);
+let db = mongoose.connection;
+db.on("error", (error) => {
+  console.error("error in MongoDb connection: " + error);
+  mongoose.disconnect();
+});
+db.on("connected", () => {
+  console.log("MongoDB connected successfully");
+});
+db.on("disconnected", () => {
+  console.log("MongoDB disconnected");
+});
+
+app.get("/products", async (req, res) => {
+  if (db.readyState !== 1) {
+    res.send("something went wrong...");
   }
-  console.log(`server is listening on ${port}`);
+  const products = await Product.find({});
+  res.send(products);
+});
+
+app.listen(3000, function () {
+  console.log(`server started on PORT ${PORT}`);
 });
