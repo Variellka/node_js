@@ -1,5 +1,5 @@
-import { prop, getModelForClass } from "@typegoose/typegoose";
-import { ObjectId } from "mongodb";
+import { prop, getModelForClass } from '@typegoose/typegoose';
+import { ObjectId } from 'mongodb';
 
 class ProductClass {
   @prop()
