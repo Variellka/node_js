@@ -1,6 +1,6 @@
 import { prop, getModelForClass } from '@typegoose/typegoose';
 
-class categoryClass {
+class CategoryClass {
   @prop()
   public displayName?: String;
 
@@ -8,4 +8,4 @@ class categoryClass {
   public createdAt?: Date;
 }
 
-export const categoryModel = getModelForClass(categoryClass);
+export const CategoryModel = getModelForClass(CategoryClass);

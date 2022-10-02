@@ -11,5 +11,9 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint"],
-  "rules": {}
+  "rules": {
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "semi": 0
+  }
 }
