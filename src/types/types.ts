@@ -7,11 +7,12 @@ export interface IProduct {
   createdAt: Date;
   totalRating: number;
   price: number;
-  categoryId?: Ref<ICategory>[];
+  categoryId?: Ref<ICategory>;
 }
 
 export interface ICategory {
   _id?: ObjectId | string;
+  productId?: Ref<IProduct>[];
   displayName: string;
   createdAt: Date;
 }

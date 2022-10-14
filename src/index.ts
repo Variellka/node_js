@@ -4,6 +4,8 @@ import { connectPostgreSQL } from './db/postgres';
 
 import CategoryTypegooseRepository from './repositories/category/categoryTypegooseRepository';
 import ProductTypegooseRepository from './repositories/product/productTypegooseRepository';
+import CategoryTypeOrmRepository from './repositories/category/categoryTypeOrmRepository';
+import ProductTypeOrmRepository from './repositories/product/productTypeOrmRepository';
 
 let ProductRepository: IProductRepository;
 let CategoryRepository: ICategoryRepository;
@@ -19,8 +21,8 @@ async function connect(): Promise<void> {
     CategoryRepository = new CategoryTypegooseRepository();
   } else if (process.env.CURRENT_DB === 'postgres') {
     await connectPostgreSQL();
-    //ProductRepository = new ProductTypeOrmRepository();
-    // CategoryRepository = new CategoryTypeOrmRepository();
+    ProductRepository = new ProductTypeOrmRepository();
+    CategoryRepository = new CategoryTypeOrmRepository();
   }
 }
 
