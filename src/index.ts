@@ -12,7 +12,7 @@ async function connect(): Promise<void> {
     await connectMongoDb();
     createProductTypegooseRepository();
     createCategoryTypegooseRepository();
-  } else if (process.env.CURRENT_DB === 'postgres') {
+  } else {
     await connectPostgreSQL();
     createProductTypeOrmRepository();
     createCategoryTypeOrmRepository();
