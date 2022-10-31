@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "strict": true,
     "alwaysStrict": true,

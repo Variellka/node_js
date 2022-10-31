@@ -1,34 +1,19 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import { ProductModel } from './db/product-model';
+import { ProductRouter } from './src/routes/product.routes';
+import { database } from './src';
 require('dotenv').config();
+database.connect();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-const base_URL: string = process.env.DATABASE_URL || '';
-mongoose.connect(base_URL);
+const router = express.Router();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use('/', router);
 
-let db = mongoose.connection;
-db.on('error', (error: string) => {
-  console.error('error in MongoDb connection: ' + error);
-  mongoose.disconnect();
-});
-db.on('connected', () => {
-  console.log('MongoDB connected successfully');
-});
-db.on('disconnected', () => {
-  console.log('MongoDB disconnected');
-});
+ProductRouter(router);
 
-app.get('/products', async (req, res) => {
-  if (db.readyState !== 1) {
-    res.send('something went wrong...');
-  }
-  const products = await ProductModel.find({});
-  res.send(products);
-});
-
-app.listen(3000, function () {
+app.listen(PORT, function () {
   console.log(`server started on PORT ${PORT}`);
 });
