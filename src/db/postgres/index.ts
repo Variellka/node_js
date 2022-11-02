@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Product } from './models/product-model';
 import { Сategory } from './models/category-model';
+import logger from './../../helpers/logger';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -18,9 +19,15 @@ export const AppDataSource = new DataSource({
 export const connectPostgreSQL = () => {
   AppDataSource.initialize()
     .then(() => {
-      console.log('PostgreSQL connected successfully');
+      logger.log({
+        level: 'info',
+        message: 'PostgreSQL connected successfully',
+      });
     })
     .catch((error) => {
-      console.error('error in PostgreSQL connection: ' + error);
+      logger.log({
+        level: 'error',
+        message: 'Error in PostgreSQL connection: ' + error.message,
+      });
     });
 };

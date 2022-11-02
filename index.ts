@@ -1,6 +1,7 @@
 import express from 'express';
 import { ProductRouter } from './src/routes/product.routes';
 import { database } from './src';
+import logger from './src/helpers/logger';
 require('dotenv').config();
 database.connect();
 
@@ -12,8 +13,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', router);
 
+app.use((req, res, next) => {
+  if (res.writableEnded) {
+    logger.log({
+      level: 'info',
+      message: `New request from ${req.url}. Response status is ${res.statusCode}.`,
+    });
+  } else {
+    logger.log({
+      level: 'warn',
+      message: `New request from ${req.url}. Response status is 404, route was not found.`,
+    });
+    next();
+  }
+});
+
 ProductRouter(router);
 
-app.listen(PORT, function () {
-  console.log(`server started on PORT ${PORT}`);
+app.listen(PORT, () => {
+  logger.log({
+    level: 'info',
+    message: `Server started on PORT ${PORT}`,
+  });
 });

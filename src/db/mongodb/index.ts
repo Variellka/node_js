@@ -1,18 +1,28 @@
 import mongoose from 'mongoose';
+import logger from './../../helpers/logger';
 
 export const connectMongoDb = (): void => {
   const connectionString: string = process.env.MONGO_DATABASE_URL || '';
   mongoose.connect(connectionString);
 
   let db = mongoose.connection;
-  db.on('error', (error: string) => {
-    console.error('error in MongoDb connection: ' + error);
+  db.on('error', (error) => {
+    logger.log({
+      level: 'error',
+      message: 'Error in MongoDb connection: ' + error.message,
+    });
     mongoose.disconnect();
   });
   db.on('connected', () => {
-    console.log('MongoDB connected successfully');
+    logger.log({
+      level: 'info',
+      message: 'MongoDB connected successfully',
+    });
   });
   db.on('disconnected', () => {
-    console.log('MongoDB disconnected');
+    logger.log({
+      level: 'info',
+      message: 'MongoDB disconnected',
+    });
   });
 };
