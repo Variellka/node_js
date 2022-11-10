@@ -17,8 +17,20 @@ export interface ICategory {
   createdAt: Date;
 }
 
+export interface QueryObject {
+  displayName?: string;
+  minRating?: number;
+  price?: string;
+  sortBy?: string;
+}
+
+export interface Result {
+  find: any;
+  sort: any;
+}
+
 interface Repository<T> {
-  getAll: () => Promise<T[]>;
+  getAll: (query?: QueryObject) => Promise<T[]>;
 }
 
 export interface IProductRepository extends Repository<IProduct> {}
