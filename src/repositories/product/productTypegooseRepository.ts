@@ -5,6 +5,7 @@ const productSearchQueryHandler = (query?: QueryObject) => {
   const result: Result = {
     find: {},
     sort: {},
+    pagination: {},
   };
   if (!query) return result;
   if (query.displayName) {
@@ -27,19 +28,28 @@ const productSearchQueryHandler = (query?: QueryObject) => {
     const order = type === 'desc' ? -1 : 1;
     result.sort = [[option, order]];
   }
+  if (query.limit && query.offset) {
+    result.pagination.limit = query.limit;
+    result.pagination.offset = query.offset;
+  }
   return result;
 };
 
 export default class ProductTypegooseRepository implements IProductTypegooseRepository {
   public async getAll(query?: QueryObject): Promise<IProduct[]> {
-    let searchOptions = {};
-    let sortOptions = {};
+    let searchOptions,
+      sortOptions,
+      paginationOptions = {};
     if (query) {
       searchOptions = productSearchQueryHandler(query).find;
       sortOptions = productSearchQueryHandler(query).sort;
+      paginationOptions = productSearchQueryHandler(query).pagination;
     }
     const data: IProduct[] = await ProductModel.find({ ...searchOptions });
     //.sort(sortOptions);
+    //.skip(paginationOptions.offset)
+    //.limit(paginationOptions.limit);
+
     return data;
   }
 }

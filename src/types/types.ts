@@ -22,11 +22,14 @@ export interface QueryObject {
   minRating?: number;
   price?: string;
   sortBy?: string;
+  limit?: number;
+  offset?: number;
 }
 
 export interface Result {
   find: any;
   sort: any;
+  pagination: any;
 }
 
 interface Repository<T> {
