@@ -1,12 +1,9 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
-import { ObjectId } from 'mongodb';
+import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
+import { CategoryClass } from './category-model';
 
-class ProductClass {
+export class ProductClass {
   @prop()
   public displayName?: String;
-
-  @prop()
-  public categoryId?: ObjectId;
 
   @prop()
   public createdAt?: Date;
@@ -16,6 +13,9 @@ class ProductClass {
 
   @prop()
   public price?: Number;
+
+  @prop({ ref: () => CategoryClass })
+  public categoryIds?: Ref<CategoryClass>[];
 }
 
 export const ProductModel = getModelForClass(ProductClass);

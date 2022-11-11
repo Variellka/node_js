@@ -7,14 +7,14 @@ export interface IProduct {
   createdAt: Date;
   totalRating: number;
   price: number;
-  categoryId?: Ref<ICategory>;
+  categoryIds?: Ref<ICategory>[];
 }
 
 export interface ICategory {
   _id?: ObjectId | string;
-  productId?: Ref<IProduct>[];
   displayName: string;
   createdAt: Date;
+  productIds?: Ref<IProduct>[];
 }
 
 export interface QueryObject {

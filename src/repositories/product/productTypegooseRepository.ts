@@ -37,18 +37,16 @@ const productSearchQueryHandler = (query?: QueryObject) => {
 
 export default class ProductTypegooseRepository implements IProductTypegooseRepository {
   public async getAll(query?: QueryObject): Promise<IProduct[]> {
-    let searchOptions,
-      sortOptions,
-      paginationOptions = {};
+    let searchOptions, sortOptions, paginationOptions;
     if (query) {
       searchOptions = productSearchQueryHandler(query).find;
       sortOptions = productSearchQueryHandler(query).sort;
       paginationOptions = productSearchQueryHandler(query).pagination;
     }
-    const data: IProduct[] = await ProductModel.find({ ...searchOptions });
-    //.sort(sortOptions);
-    //.skip(paginationOptions.offset)
-    //.limit(paginationOptions.limit);
+    const data: any = await ProductModel.find({ ...searchOptions })
+      .sort(sortOptions)
+      .skip(paginationOptions.offset)
+      .limit(paginationOptions.limit);
 
     return data;
   }
