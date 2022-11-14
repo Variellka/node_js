@@ -28,8 +28,10 @@ const productSearchQueryHandler = (query?: QueryObject) => {
     const order = type === 'desc' ? -1 : 1;
     result.sort = [[option, order]];
   }
-  if (query.limit && query.offset) {
+  if (query.limit) {
     result.pagination.limit = query.limit;
+  }
+  if (query.offset) {
     result.pagination.offset = query.offset;
   }
   return result;
