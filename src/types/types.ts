@@ -34,6 +34,7 @@ export interface Result {
 
 interface Repository<T> {
   getAll: (query?: QueryObject) => Promise<T[]>;
+  getById?: (id: ObjectId | string, query?: QueryObject) => Promise<T | null>;
 }
 
 export interface IProductRepository extends Repository<IProduct> {}
