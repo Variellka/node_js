@@ -32,13 +32,17 @@ export interface Result {
   pagination: any;
 }
 
-interface Repository<T> {
+interface ProductRepository<T> {
   getAll: (query?: QueryObject) => Promise<T[]>;
-  getById?: (id: ObjectId | string, query?: QueryObject) => Promise<T | null>;
 }
 
-export interface IProductRepository extends Repository<IProduct> {}
-export interface ICategoryRepository extends Repository<ICategory> {}
+interface CategoryRepository<T> {
+  getAll: (query?: QueryObject) => Promise<T[]>;
+  getById: (id: ObjectId | string) => Promise<T | null>;
+}
+
+export interface IProductRepository extends ProductRepository<IProduct> {}
+export interface ICategoryRepository extends CategoryRepository<ICategory> {}
 
 export interface IProductTypeOrmRepository extends IProductRepository {}
 export interface IProductTypegooseRepository extends IProductRepository {}
