@@ -24,6 +24,8 @@ export interface QueryObject {
   sortBy?: string;
   limit?: number;
   offset?: number;
+  includeProducts?: boolean;
+  includeTop3Products?: string;
 }
 
 export interface Result {
@@ -37,8 +39,8 @@ interface ProductRepository<T> {
 }
 
 interface CategoryRepository<T> {
-  getAll: (query?: QueryObject) => Promise<T[]>;
-  getById: (id: ObjectId | string) => Promise<T | null>;
+  getAll: () => Promise<T[]>;
+  getById: (id: ObjectId | string, query?: QueryObject) => Promise<T | null>;
 }
 
 export interface IProductRepository extends ProductRepository<IProduct> {}

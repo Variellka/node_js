@@ -1,6 +1,7 @@
-import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
+import { prop, getModelForClass, Ref, index } from '@typegoose/typegoose';
 import { ProductClass } from './product-model';
 
+@index({ displayName: 1 }, { unique: true })
 export class CategoryClass {
   @prop()
   public displayName?: String;
