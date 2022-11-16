@@ -13,15 +13,13 @@ export default class CategoryTypegooseRepository implements ICategoryTypegooseRe
     const data: any = await CategoryModel.findById(id);
 
     if (query?.includeProducts && data) {
-      let products: any;
-
+      let products;
       if (!query?.includeTop3Products) {
-        products = await ProductModel.find({ categoryIds: id });
-      } else if (query?.includeTop3Products) {
-        products = await ProductModel.find({ categoryIds: id }).sort({ totalRating: -1 }).limit(3);
+        products = await ProductModel.find({ categories: id });
+      } else if (query?.includeTop3Products === 'top') {
+        products = await ProductModel.find({ categories: id }).sort({ totalRating: -1 }).limit(3);
       }
-      data.productsIds = products;
-      console.log(data.productsIds);
+      data.products = products;
     }
 
     return data;

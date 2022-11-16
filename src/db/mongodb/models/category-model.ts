@@ -10,7 +10,7 @@ export class CategoryClass {
   public createdAt?: Date;
 
   @prop({ ref: () => ProductClass })
-  public productIds?: Ref<ProductClass>[];
+  public products?: Ref<ProductClass>[];
 }
 
 export const CategoryModel = getModelForClass(CategoryClass);

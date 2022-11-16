@@ -17,7 +17,7 @@ export class ProductClass {
   public price?: Number;
 
   @prop({ ref: () => CategoryClass })
-  public categoryIds?: Ref<CategoryClass>[];
+  public categories?: Ref<CategoryClass>[];
 }
 
 export const ProductModel = getModelForClass(ProductClass);

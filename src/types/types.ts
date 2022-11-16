@@ -7,14 +7,14 @@ export interface IProduct {
   createdAt: Date;
   totalRating: number;
   price: number;
-  categoryIds?: Ref<ICategory>[];
+  categories?: Ref<ICategory>[];
 }
 
 export interface ICategory {
   _id?: ObjectId | string;
   displayName: string;
   createdAt: Date;
-  productIds?: Ref<IProduct>[];
+  products?: Ref<IProduct>[];
 }
 
 export interface QueryObject {
@@ -29,9 +29,11 @@ export interface QueryObject {
 }
 
 export interface Result {
-  find: any;
-  sort: any;
-  pagination: any;
+  find?: any;
+  sort?: any;
+  where?: any;
+  order?: any;
+  pagination?: any;
 }
 
 interface ProductRepository<T> {
