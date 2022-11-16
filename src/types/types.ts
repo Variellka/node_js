@@ -34,6 +34,8 @@ export interface Result {
   where?: any;
   order?: any;
   pagination?: any;
+  skip?: any;
+  take?: any;
 }
 
 interface ProductRepository<T> {
