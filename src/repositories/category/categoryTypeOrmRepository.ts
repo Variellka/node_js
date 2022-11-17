@@ -1,8 +1,6 @@
-/* eslint-disable space-before-function-paren */
 import { AppDataSource } from '../../db/postgres';
 import { ICategory, ICategoryTypeOrmRepository, QueryObject } from '../../types/types';
 import { Category } from '../../db/postgres/models/category-model';
-import { Schema } from 'mongoose';
 
 export default class CategoryTypeOrmRepository implements ICategoryTypeOrmRepository {
   public async getAll(): Promise<ICategory[]> {
@@ -10,15 +8,24 @@ export default class CategoryTypeOrmRepository implements ICategoryTypeOrmReposi
     return data;
   }
 
-  public async getById(id: number, query?: QueryObject): Promise<ICategory | null> {
-    const data: any = await AppDataSource.getRepository(Category).findOne({ where: { id } });
+  public async getById(id: number, query?: QueryObject): Promise<any> {
+    const categoryRepository = AppDataSource.getRepository(Category);
 
-    // if (query?.includeProducts && data) {
-    //   if (!query?.includeTop3Products) {
-    //     data;
-    //   } else if (query?.includeTop3Products === 'top') {
-    //   }
-    // }
+    let categoryQueryBuilder;
+    categoryQueryBuilder = categoryRepository.createQueryBuilder('category').where('category.id = :id', { id });
+
+    if (query?.includeProducts) {
+      if (!query?.includeTop3Products) {
+        categoryQueryBuilder.leftJoinAndSelect('category.products', 'product');
+      } else if (query?.includeTop3Products === 'top') {
+        categoryQueryBuilder
+          .leftJoinAndSelect('category.products', 'product')
+          .orderBy('product.totalRating', 'ASC')
+          .limit(3);
+      }
+    }
+
+    const data = await categoryQueryBuilder.getMany();
 
     return data;
   }

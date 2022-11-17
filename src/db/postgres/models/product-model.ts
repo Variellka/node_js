@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, Index } from 'typeorm';
 import { Category } from './category-model';
 
-@Entity()
+@Entity('product')
 export class Product {
   @Index({ unique: true })
   @PrimaryGeneratedColumn()
