@@ -1,7 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, Index } from 'typeorm';
 import { Product } from './product-model';
-@Entity()
-export class Сategory {
+
+@Entity('category')
+export class Category {
+  @Index({ unique: true })
   @PrimaryGeneratedColumn()
   id!: number;
 

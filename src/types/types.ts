@@ -44,7 +44,7 @@ interface ProductRepository<T> {
 
 interface CategoryRepository<T> {
   getAll: () => Promise<T[]>;
-  getById: (id: ObjectId | string, query?: QueryObject) => Promise<T | null>;
+  getById: (id: any, query?: QueryObject) => Promise<T | null>;
 }
 
 export interface IProductRepository extends ProductRepository<IProduct> {}

@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
-import { Сategory } from './category-model';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, Index } from 'typeorm';
+import { Category } from './category-model';
 
 @Entity()
 export class Product {
+  @Index({ unique: true })
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -15,8 +16,11 @@ export class Product {
   @Column()
   totalRating!: number;
 
-  @ManyToMany(() => Сategory, (category) => category.products)
-  categories: Сategory[];
+  @ManyToMany(() => Category, (category) => category.products, {
+    cascade: true,
+  })
+  @JoinTable()
+  categories: Category[];
 
   @Column()
   price!: number;

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Product } from './models/product-model';
-import { Сategory } from './models/category-model';
+import { Category } from './models/category-model';
 import logger from './../../helpers/logger';
 
 export const AppDataSource = new DataSource({
@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
   username: 'admin',
   password: 'admin',
   database: 'node_postgresql',
-  entities: [Сategory, Product],
+  entities: [Category, Product],
   logging: true,
   synchronize: true,
 });
