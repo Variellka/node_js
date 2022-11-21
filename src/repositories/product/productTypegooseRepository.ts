@@ -45,7 +45,7 @@ export default class ProductTypegooseRepository implements IProductTypegooseRepo
       sortOptions = productSearchQueryHandler(query).sort;
       paginationOptions = productSearchQueryHandler(query).pagination;
     }
-    const data: any = await ProductModel.find({ ...searchOptions })
+    const data: IProduct[] = await ProductModel.find({ ...searchOptions })
       .sort(sortOptions)
       .skip(paginationOptions.offset)
       .limit(paginationOptions.limit);

@@ -1,16 +1,17 @@
 import { prop, getModelForClass, Ref, index } from '@typegoose/typegoose';
-import { ProductClass } from './product-model';
+import { Product } from './product-model';
+import { ICategoryMongo, IProductMongo } from './../../../types/types';
 
 @index({ displayName: 1 }, { unique: true })
-export class CategoryClass {
+export class Category implements ICategoryMongo {
   @prop()
-  public displayName?: String;
+  public displayName: string;
 
   @prop()
-  public createdAt?: Date;
+  public createdAt: Date;
 
-  @prop({ ref: () => ProductClass })
-  public products?: Ref<ProductClass>[];
+  @prop({ ref: () => Product })
+  public products: Ref<IProductMongo>[];
 }
 
-export const CategoryModel = getModelForClass(CategoryClass);
+export const CategoryModel = getModelForClass(Category);

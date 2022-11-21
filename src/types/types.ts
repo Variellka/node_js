@@ -7,14 +7,46 @@ export interface IProduct {
   createdAt: Date;
   totalRating: number;
   price: number;
-  categories?: Ref<ICategory>[];
+  categories: ICategory[] | Ref<ICategory>[];
+}
+
+export interface IProductMongo {
+  _id?: ObjectId;
+  displayName: string;
+  createdAt: Date;
+  totalRating: number;
+  price: number;
+  categories: Ref<ICategory>[];
+}
+
+export interface IProductPostgres {
+  _id?: string;
+  displayName: string;
+  createdAt: Date;
+  totalRating: number;
+  price: number;
+  categories: ICategory[];
 }
 
 export interface ICategory {
   _id?: ObjectId | string;
   displayName: string;
   createdAt: Date;
-  products?: Ref<IProduct>[];
+  products: IProduct[] | Ref<IProduct>[];
+}
+
+export interface ICategoryMongo {
+  _id?: ObjectId;
+  displayName: string;
+  createdAt: Date;
+  products: Ref<IProduct>[];
+}
+
+export interface ICategoryPostgres {
+  _id?: string;
+  displayName: string;
+  createdAt: Date;
+  products: IProduct[];
 }
 
 export interface QueryObject {

@@ -8,7 +8,7 @@ export default class CategoryTypeOrmRepository implements ICategoryTypeOrmReposi
     return data;
   }
 
-  public async getById(id: number, query?: QueryObject): Promise<any> {
+  public async getById(id: string, query?: QueryObject): Promise<any> {
     const categoryRepository = AppDataSource.getRepository(Category);
 
     let categoryQueryBuilder;
