@@ -1,12 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, Index, JoinTable } from 'typeorm';
+import { ICategoryPostgres, IProductPostgres } from '../../../types/types';
 import { Product } from './product-model';
-@Entity()
-export class Сategory {
+
+@Entity('category')
+export class Category implements ICategoryPostgres {
+  @Index({ unique: true })
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @OneToMany(() => Product, (product) => product.displayName)
-  prodictId: Product[];
+  @ManyToMany(() => Product, (product) => product.categories)
+  @JoinTable()
+  products: IProductPostgres[];
 
   @Column()
   displayName!: string;

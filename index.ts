@@ -1,5 +1,6 @@
 import express from 'express';
 import { ProductRouter } from './src/routes/product.routes';
+import { CategoryRouter } from './src/routes/category.routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
 require('dotenv').config();
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 });
 
 ProductRouter(router);
+CategoryRouter(router);
 
 app.listen(PORT, () => {
   logger.log({
