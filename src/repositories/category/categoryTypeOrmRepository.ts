@@ -1,6 +1,7 @@
 import { AppDataSource } from '../../db/postgres';
 import { ICategory, ICategoryTypeOrmRepository, QueryObject } from '../../types/types';
 import { Category } from '../../db/postgres/models/category-model';
+import { validateCategoryQuery } from '../../helpers/queryErrorHandlers/category';
 
 export default class CategoryTypeOrmRepository implements ICategoryTypeOrmRepository {
   public async getAll(): Promise<ICategory[]> {
@@ -13,6 +14,8 @@ export default class CategoryTypeOrmRepository implements ICategoryTypeOrmReposi
 
     let categoryQueryBuilder;
     categoryQueryBuilder = categoryRepository.createQueryBuilder('category').where('category.id = :id', { id });
+
+    if (query) validateCategoryQuery(query);
 
     if (query?.includeProducts) {
       if (!query?.includeTop3Products) {

@@ -16,8 +16,11 @@ export const CategoryRouter = (router: Router): void => {
     try {
       const category = await CategoryRepository.getById(req.params.id, query);
       res.status(200).send(category);
-    } catch (err) {
-      res.status(500).send('Error getting category by Id: ' + err);
+    } catch (err: any) {
+      res.status(err.status || 500).send({
+        status: err.status,
+        message: err.message,
+      });
     }
   });
 };

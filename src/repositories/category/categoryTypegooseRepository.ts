@@ -2,6 +2,7 @@ import { ObjectId } from 'mongoose';
 import { ICategory, ICategoryTypegooseRepository, IProduct, QueryObject } from '../../types/types';
 import { CategoryModel } from '../../db/mongodb/models/category-model';
 import { ProductModel } from '../../db/mongodb/models/product-model';
+import { validateCategoryQuery } from '../../helpers/queryErrorHandlers/category';
 
 export default class CategoryTypegooseRepository implements ICategoryTypegooseRepository {
   public async getAll(): Promise<ICategory[]> {
@@ -17,6 +18,8 @@ export default class CategoryTypegooseRepository implements ICategoryTypegooseRe
       categoryWithFilter._id = data._id;
       categoryWithFilter.displayName = data.displayName;
     }
+
+    if (query) validateCategoryQuery(query);
 
     if (query?.includeProducts && data) {
       let products: IProduct[] = [];

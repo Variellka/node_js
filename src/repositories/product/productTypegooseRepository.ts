@@ -1,5 +1,6 @@
 import { IProduct, IProductTypegooseRepository, QueryObject, Result } from '../../types/types';
 import { ProductModel } from '../../db/mongodb/models/product-model';
+import { validateProductQuery } from '../../helpers/queryErrorHandlers/product';
 
 const productSearchQueryHandler = (query?: QueryObject) => {
   const result: Result = {
@@ -8,6 +9,9 @@ const productSearchQueryHandler = (query?: QueryObject) => {
     pagination: {},
   };
   if (!query) return result;
+  if (query) {
+    validateProductQuery(query);
+  }
   if (query.displayName) {
     result.find.displayName = query.displayName;
   }

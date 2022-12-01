@@ -2,6 +2,7 @@ import { MoreThanOrEqual, Between } from 'typeorm';
 import { AppDataSource } from '../../db/postgres';
 import { IProduct, IProductTypeOrmRepository, QueryObject, Result } from '../../types/types';
 import { Product } from '../../db/postgres/models/product-model';
+import { validateProductQuery } from '../../helpers/queryErrorHandlers/product';
 
 const productSearchQueryHandler = (query?: QueryObject) => {
   const result: Result = {
@@ -9,11 +10,16 @@ const productSearchQueryHandler = (query?: QueryObject) => {
     order: {},
   };
   if (!query) return result;
+  if (query) {
+    validateProductQuery(query);
+  }
   if (query.displayName) {
     result.where.displayName = query.displayName;
   }
   if (query.minRating) {
-    result.where.totalRating = MoreThanOrEqual(query.minRating);
+    if (!isNaN(query.minRating)) {
+      result.where.totalRating = MoreThanOrEqual(query.minRating);
+    }
   }
   if (query.price) {
     const [min, max] = query.price.split(':').map((value) => parseInt(value));
