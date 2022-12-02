@@ -4,7 +4,7 @@ export const validateProductQuery = (query: QueryObject): void => {
   const errors: string[] = [];
 
   if (query.price) {
-    const [min, max] = query.price.split(':').map((value: any) => parseInt(value));
+    const [min, max] = query.price.split(':');
     if (isNaN(Number(min)) || isNaN(Number(max))) {
       errors.push('price is invalid');
     }

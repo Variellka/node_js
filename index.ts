@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', router);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   if (res.writableEnded) {
     logger.log({
       level: 'info',

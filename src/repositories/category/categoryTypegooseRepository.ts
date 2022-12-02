@@ -11,17 +11,22 @@ export default class CategoryTypegooseRepository implements ICategoryTypegooseRe
   }
 
   public async getById(id: ObjectId | string, query?: QueryObject): Promise<ICategory> {
-    const data: ICategory | null = await CategoryModel.findById(id);
+    const category: ICategory | null = await CategoryModel.findById(id);
     const categoryWithFilter: any = {};
 
-    if (data) {
-      categoryWithFilter._id = data._id;
-      categoryWithFilter.displayName = data.displayName;
+    if (category) {
+      categoryWithFilter._id = category._id;
+      categoryWithFilter.displayName = category.displayName;
+    } else {
+      throw {
+        message: 'category does not exist',
+        status: 404,
+      };
     }
 
     if (query) validateCategoryQuery(query);
 
-    if (query?.includeProducts && data) {
+    if (query?.includeProducts && category) {
       let products: IProduct[] = [];
       if (!query?.includeTop3Products) {
         products = await ProductModel.find({ categories: id });

@@ -15,6 +15,14 @@ export default class CategoryTypeOrmRepository implements ICategoryTypeOrmReposi
     let categoryQueryBuilder;
     categoryQueryBuilder = categoryRepository.createQueryBuilder('category').where('category.id = :id', { id });
 
+    const category = await categoryQueryBuilder.getOne();
+    if (!category) {
+      throw {
+        message: 'category does not exist',
+        status: 404,
+      };
+    }
+
     if (query) validateCategoryQuery(query);
 
     if (query?.includeProducts) {
