@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', router);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   if (res.writableEnded) {
     logger.log({
       level: 'info',
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
       level: 'warn',
       message: `New request from ${req.url}. Response status is 404, route was not found.`,
     });
-    next();
+    res.status(404).send('404 - Page not found');
   }
 });
 
