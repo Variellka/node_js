@@ -70,6 +70,13 @@ export interface Result {
   take?: any;
 }
 
+export interface IAccount {
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
 interface ProductRepository<T> {
   getAll: (query?: QueryObject) => Promise<T[]>;
 }
@@ -79,11 +86,19 @@ interface CategoryRepository<T> {
   getById: (id: any, query?: QueryObject) => Promise<T | null>;
 }
 
+interface AccountRepository<T> {
+  create: (entity: T) => Promise<T>;
+}
+
 export interface IProductRepository extends ProductRepository<IProduct> {}
 export interface ICategoryRepository extends CategoryRepository<ICategory> {}
+export interface IAccountRepository extends AccountRepository<IAccount> {}
 
 export interface IProductTypeOrmRepository extends IProductRepository {}
 export interface IProductTypegooseRepository extends IProductRepository {}
 
 export interface ICategoryTypeOrmRepository extends ICategoryRepository {}
 export interface ICategoryTypegooseRepository extends ICategoryRepository {}
+
+export interface IAccountTypeOrmRepository extends IAccountRepository {}
+export interface IAccountTypegooseRepository extends IAccountRepository {}
