@@ -88,6 +88,9 @@ interface CategoryRepository<T> {
 
 interface AccountRepository<T> {
   create: (entity: T) => Promise<T>;
+  read?: (entity: T) => Promise<T>;
+  update?: (entity: T) => Promise<boolean>;
+  delete?: (entity: T) => Promise<boolean>;
 }
 
 export interface IProductRepository extends ProductRepository<IProduct> {}

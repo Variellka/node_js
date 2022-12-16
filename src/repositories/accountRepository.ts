@@ -5,12 +5,12 @@ import AccountTypeOrmRepository from './account/accountTypeOrmRepository';
 
 let AccountRepository: IAccountRepository;
 
-function createProductTypegooseRepository() {
+function createAccountTypegooseRepository() {
   AccountRepository = new AccountTypegooseRepository();
 }
 
-function createProductTypeOrmRepository() {
+function createAccountTypeOrmRepository() {
   AccountRepository = new AccountTypeOrmRepository();
 }
 
-export { createProductTypegooseRepository, createProductTypeOrmRepository, AccountRepository };
+export { createAccountTypegooseRepository, createAccountTypeOrmRepository, AccountRepository };
