@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { AccountRepository } from '../repositories/accountRepository';
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
 export const AuthRouter = (router: Router): void => {
   router.post('/register', async (req, res, next) => {
@@ -15,7 +17,6 @@ export const AuthRouter = (router: Router): void => {
     } catch (err) {
       next(err);
     }
-
     next();
   });
 };

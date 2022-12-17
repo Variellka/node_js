@@ -71,10 +71,11 @@ export interface Result {
 }
 
 export interface IAccount {
+  _id?: ObjectId | string;
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 interface ProductRepository<T> {
@@ -88,7 +89,7 @@ interface CategoryRepository<T> {
 
 interface AccountRepository<T> {
   create: (entity: T) => Promise<T>;
-  read?: (entity: T) => Promise<T>;
+  read: (username: string) => Promise<T | null>;
   update?: (entity: T) => Promise<boolean>;
   delete?: (entity: T) => Promise<boolean>;
 }

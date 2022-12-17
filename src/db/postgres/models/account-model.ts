@@ -7,7 +7,7 @@ export class Account implements IAccount {
   @PrimaryGeneratedColumn()
   _id: string;
 
-  @Index('Account username', { unique: true })
+  @Index('username', { unique: true })
   @Column()
   username: string;
 

@@ -4,6 +4,7 @@ import { CategoryRouter } from './src/routes/category.routes';
 import { AuthRouter } from './src/routes/account.routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
+import './src/config/passport';
 require('dotenv').config();
 database.connect();
 
