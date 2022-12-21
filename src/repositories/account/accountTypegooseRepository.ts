@@ -2,7 +2,7 @@ import { hashPassword } from '../../helpers/hash';
 import { IAccount, IAccountRepository } from '../../types/types';
 import { Account, AccountModel } from '../../db/mongodb/models/account-model';
 
-export default class AccountTypeOrmRepository implements IAccountRepository {
+export default class AccountTypegooseRepository implements IAccountRepository {
   public async create(entity: IAccount): Promise<IAccount> {
     const hashedPassword = await hashPassword(entity.password);
     await new AccountModel({

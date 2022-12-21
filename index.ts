@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import { ProductRouter } from './src/routes/product.routes';
 import { CategoryRouter } from './src/routes/category.routes';
 import { AuthRouter } from './src/routes/account.routes';
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 const router = express.Router();
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', router);
 
