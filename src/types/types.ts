@@ -89,7 +89,8 @@ interface CategoryRepository<T> {
 
 interface AccountRepository<T> {
   create: (entity: T) => Promise<T>;
-  read: (username: string) => Promise<T | null>;
+  getByUsername: (username: string) => Promise<T | null>;
+  getById: (id: any) => Promise<T | null>;
   update?: (entity: T) => Promise<boolean>;
   delete?: (entity: T) => Promise<boolean>;
 }

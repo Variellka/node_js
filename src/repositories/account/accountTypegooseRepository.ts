@@ -1,3 +1,4 @@
+import { mongoose } from '@typegoose/typegoose';
 import { hashPassword } from '../../helpers/hash';
 import { IAccount, IAccountRepository } from '../../types/types';
 import { Account, AccountModel } from '../../db/mongodb/models/account-model';
@@ -12,8 +13,16 @@ export default class AccountTypegooseRepository implements IAccountRepository {
     return entity;
   }
 
-  public async read(username: string): Promise<IAccount | null> {
+  public async getByUsername(username: string): Promise<IAccount | null> {
     const data: IAccount | null = await AccountModel.findOne({ username });
+    return data;
+  }
+
+  public async getById(id: string): Promise<IAccount | null> {
+    const objectId = new mongoose.Types.ObjectId(id);
+    const data: IAccount | null = await AccountModel.findOne({
+      _id: objectId,
+    });
     return data;
   }
 
