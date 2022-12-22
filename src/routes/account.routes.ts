@@ -19,4 +19,22 @@ export const AuthRouter = (router: Router): void => {
     }
     next();
   });
+
+  router.post('/authenticate', function (req, res, next) {
+    passport.authenticate('local', { session: false }, (err, account, info) => {
+      if (err || !account) {
+        return res.status(400).json({
+          error: 'something is not right!',
+          info: info || err.message || 'server error',
+        });
+      }
+      req.login(account, { session: false }, (err) => {
+        if (err) {
+          res.send(err);
+        }
+        const token = jwt.sign(account, 'your_jwt_secret');
+        return res.json({ account, token, info: info.message });
+      });
+    })(req, res);
+  });
 };

@@ -11,6 +11,6 @@
     "strict": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": false
   }
 }

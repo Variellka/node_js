@@ -18,8 +18,7 @@ passport.use(
           return done(null, false, {
             message: 'password is wrong!',
           });
-
-        return done(null, account);
+        return done(null, { username, password }, { message: 'logged in successfully' });
       })
       .catch((err) => done(err));
   })
