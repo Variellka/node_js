@@ -41,7 +41,7 @@ export const AuthRouter = (router: Router): void => {
         const refreshToken = randtoken.uid(256);
         refreshTokens[refreshToken] = account.username;
         return res.json({
-          accountUsername: account.username,
+          username: account.username,
           token,
           refreshToken,
           info: info.message,

@@ -18,7 +18,7 @@ passport.use(
           return done(null, false, {
             message: 'password is wrong!',
           });
-        return done(null, { username, password }, { message: 'logged in successfully' });
+        return done(null, { username, id: account._id }, { message: 'logged in successfully' });
       })
       .catch((err) => done(err));
   })
@@ -28,7 +28,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'your_jwt_secret',
+      secretOrKey: 'SECRETO_PARA_ENCRIPTACION',
     },
     function (jwtPayload, done) {
       return AccountRepository.getById(jwtPayload.id)
