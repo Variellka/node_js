@@ -44,6 +44,7 @@ export const AuthRouter = (router: Router): void => {
           accountUsername: account.username,
           token,
           refreshToken,
+          info: info.message,
         });
       });
     })(req, res);
@@ -61,8 +62,8 @@ export const AuthRouter = (router: Router): void => {
             accountUsername: account.username,
             token,
           });
-        } else return res.status(400).send(`account with username ${username} was not found`);
+        }
       });
-    } else return res.status(400).send('refresh token is wrong!');
+    } else return res.status(400).send('refresh token or username is wrong!');
   });
 };

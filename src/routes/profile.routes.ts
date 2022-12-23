@@ -7,7 +7,9 @@ export const ProfileRouter = (router: Router): void => {
     const { username } = req.body;
     if (username) {
       const account = await AccountRepository.getByUsername(username);
-      if (account) res.status(200).send(account);
-    }
+      if (account) {
+        res.status(200).send(account);
+      } else res.status(401).send('account was not found');
+    } else res.status(400).send('username field is invalid');
   });
 };
