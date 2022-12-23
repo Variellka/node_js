@@ -2,6 +2,10 @@ import { Router } from 'express';
 import { AccountRepository } from '../repositories/accountRepository';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
+import randtoken from 'rand-token';
+
+const refreshTokens: { [key: string]: string } = {};
+const SECRET = 'SECRETO_PARA_ENCRIPTACION';
 
 export const AuthRouter = (router: Router): void => {
   router.post('/register', async (req, res, next) => {
@@ -32,9 +36,33 @@ export const AuthRouter = (router: Router): void => {
         if (err) {
           res.send(err);
         }
-        const token = jwt.sign(account, 'your_jwt_secret');
-        return res.json({ account, token, info: info.message });
+
+        const token = jwt.sign(JSON.parse(JSON.stringify(account)), SECRET, { expiresIn: 300 });
+        const refreshToken = randtoken.uid(256);
+        refreshTokens[refreshToken] = account.username;
+        return res.json({
+          accountUsername: account.username,
+          token,
+          refreshToken,
+        });
       });
     })(req, res);
+  });
+
+  router.post('/token', async (req, res, next) => {
+    const { username, refreshToken } = req.body;
+    if (refreshTokens[refreshToken] === username) {
+      await AccountRepository.getByUsername(username).then((account) => {
+        if (account) {
+          const token = jwt.sign(JSON.parse(JSON.stringify(account)), SECRET, {
+            expiresIn: 600,
+          });
+          return res.json({
+            accountUsername: account.username,
+            token,
+          });
+        } else return res.status(400).send(`account with username ${username} was not found`);
+      });
+    } else return res.status(400).send('refresh token is wrong!');
   });
 };

@@ -3,7 +3,6 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { AccountRepository } from '../repositories/accountRepository';
 import passportJWT from 'passport-jwt';
 import { comparePassword } from '../helpers/hash';
-import { IAccount } from '../types/types';
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 

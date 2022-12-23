@@ -1,8 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { ProductRouter } from './src/routes/product.routes';
-import { CategoryRouter } from './src/routes/category.routes';
-import { AuthRouter } from './src/routes/account.routes';
+import { ProductRouter, CategoryRouter, AuthRouter, ProfileRouter } from './src/routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
 import './src/config/passport';
@@ -36,6 +34,7 @@ app.use((req, res) => {
 ProductRouter(router);
 CategoryRouter(router);
 AuthRouter(router);
+ProfileRouter(router);
 
 app.listen(PORT, () => {
   logger.log({
