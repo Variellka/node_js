@@ -91,8 +91,8 @@ interface AccountRepository<T> {
   create: (entity: T) => Promise<T>;
   getByUsername: (username: string) => Promise<T | null>;
   getById: (id: any) => Promise<T | null>;
-  update?: (entity: T) => Promise<boolean>;
-  delete?: (entity: T) => Promise<boolean>;
+  update: (entity: T) => Promise<boolean>;
+  delete: (entity: T) => Promise<boolean>;
 }
 
 export interface IProductRepository extends ProductRepository<IProduct> {}
