@@ -5,18 +5,18 @@ import { IAccount } from '../../../types/types';
 export class Account implements IAccount {
   @Index({ unique: true })
   @PrimaryGeneratedColumn()
-  _id: string;
+  _id!: string;
 
   @Index('username', { unique: true })
   @Column()
-  username: string;
+  username!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column()
-  firstName: string;
+  firstName!: string;
 
   @Column()
-  lastName: string;
+  lastName!: string;
 }

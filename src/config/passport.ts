@@ -6,6 +6,8 @@ import { comparePassword } from '../helpers/hash';
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
+const SECRET = process.env.SECRET as string;
+
 passport.use(
   new LocalStrategy(function (username, password, done) {
     return AccountRepository.getByUsername(username)
@@ -28,7 +30,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'SECRETO_PARA_ENCRIPTACION',
+      secretOrKey: SECRET,
     },
     function (jwtPayload, done) {
       return AccountRepository.getById(jwtPayload.id)

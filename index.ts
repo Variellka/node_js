@@ -1,10 +1,10 @@
+require('dotenv').config();
 import express from 'express';
 import bodyParser from 'body-parser';
 import { ProductRouter, CategoryRouter, AuthRouter, ProfileRouter } from './src/routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
 import './src/config/passport';
-require('dotenv').config();
 database.connect();
 
 const app = express();

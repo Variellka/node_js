@@ -5,7 +5,7 @@ import passport from 'passport';
 import randtoken from 'rand-token';
 
 const refreshTokens: { [key: string]: string } = {};
-const SECRET = 'SECRETO_PARA_ENCRIPTACION';
+const SECRET = process.env.SECRET as string;
 
 export const AuthRouter = (router: Router): void => {
   router.post('/register', async (req, res, next) => {

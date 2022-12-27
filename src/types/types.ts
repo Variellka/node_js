@@ -74,8 +74,8 @@ export interface IAccount {
   _id?: ObjectId | string;
   username: string;
   password: string;
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface ProductRepository<T> {
