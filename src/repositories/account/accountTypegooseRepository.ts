@@ -5,6 +5,13 @@ import { Account, AccountModel } from '../../db/mongodb/models/account-model';
 
 export default class AccountTypegooseRepository implements IAccountRepository {
   public async create(entity: IAccount): Promise<IAccount> {
+    const data: IAccount | null = await AccountModel.findOne({ username: entity.username });
+    if (data) {
+      throw {
+        message: `user with ${entity.username} username already existed`,
+        status: 400,
+      };
+    }
     const hashedPassword = await hashPassword(entity.password);
     await new AccountModel({
       ...entity,

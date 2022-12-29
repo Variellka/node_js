@@ -18,8 +18,11 @@ export const AuthRouter = (router: Router): void => {
         lastName,
       });
       res.status(200).send(newAccount);
-    } catch (err) {
-      next(err);
+    } catch (err: any) {
+      res.status(err.status || 500).send({
+        status: err.status,
+        message: err.message,
+      });
     }
     next();
   });
