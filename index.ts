@@ -3,6 +3,8 @@ import { ProductRouter } from './src/routes/product.routes';
 import { CategoryRouter } from './src/routes/category.routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
+import swaggerUi from 'swagger-ui-express';
+const swaggerDocument = require('./swagger.json');
 require('dotenv').config();
 database.connect();
 
@@ -31,6 +33,9 @@ app.use((req, res) => {
 
 ProductRouter(router);
 CategoryRouter(router);
+
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 app.listen(PORT, () => {
   logger.log({
