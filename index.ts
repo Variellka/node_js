@@ -1,11 +1,14 @@
+require('dotenv').config();
 import express from 'express';
-import { ProductRouter } from './src/routes/product.routes';
-import { CategoryRouter } from './src/routes/category.routes';
+import bodyParser from 'body-parser';
+import { ProductRouter, CategoryRouter, AuthRouter, ProfileRouter } from './src/routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
 import swaggerUi from 'swagger-ui-express';
 const swaggerDocument = require('./swagger.json');
 require('dotenv').config();
+import './src/config/passport';
+
 database.connect();
 
 const app = express();
@@ -13,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 
 const router = express.Router();
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', router);
 
@@ -33,6 +37,8 @@ app.use((req, res) => {
 
 ProductRouter(router);
 CategoryRouter(router);
+AuthRouter(router);
+ProfileRouter(router);
 
 router.use('/api-docs', swaggerUi.serve);
 router.get('/api-docs', swaggerUi.setup(swaggerDocument));

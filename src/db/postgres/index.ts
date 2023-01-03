@@ -2,16 +2,17 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Product } from './models/product-model';
 import { Category } from './models/category-model';
+import { Account } from './models/account-model';
 import logger from './../../helpers/logger';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'admin',
-  password: 'admin',
-  database: 'node_postgresql',
-  entities: [Category, Product],
+  username: process.env.POSTGRES_USER as string,
+  password: process.env.POSTGRES_PASS as string,
+  database: process.env.POSTGRES_DB_NAME as string,
+  entities: [Category, Product, Account],
   logging: true,
   synchronize: true,
 });
