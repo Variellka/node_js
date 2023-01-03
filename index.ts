@@ -1,7 +1,7 @@
 require('dotenv').config();
 import express from 'express';
 import bodyParser from 'body-parser';
-import { ProductRouter, CategoryRouter, AuthRouter, ProfileRouter } from './src/routes';
+import { ProductRouter, CategoryRouter, AuthRouter, ProfileRouter, BuyerRouter } from './src/routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
 import './src/config/passport';
@@ -35,6 +35,7 @@ ProductRouter(router);
 CategoryRouter(router);
 AuthRouter(router);
 ProfileRouter(router);
+BuyerRouter(router);
 
 app.listen(PORT, () => {
   logger.log({

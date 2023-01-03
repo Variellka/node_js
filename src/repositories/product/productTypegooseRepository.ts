@@ -1,3 +1,4 @@
+import { mongoose } from '@typegoose/typegoose';
 import { IProduct, IProductTypegooseRepository, QueryObject, Result } from '../../types/types';
 import { ProductModel } from '../../db/mongodb/models/product-model';
 import { validateProductQuery } from '../../helpers/queryErrorHandlers/product';
@@ -54,6 +55,14 @@ export default class ProductTypegooseRepository implements IProductTypegooseRepo
       .skip(paginationOptions.offset)
       .limit(paginationOptions.limit);
 
+    return data;
+  }
+
+  public async getById(id: string): Promise<IProduct | null> {
+    const objectId = new mongoose.Types.ObjectId(id);
+    const data: IProduct | null = await ProductModel.findOne({
+      _id: objectId,
+    });
     return data;
   }
 }

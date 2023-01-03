@@ -45,4 +45,20 @@ export default class ProductTypeOrmRepository implements IProductTypeOrmReposito
     const data: IProduct[] = await AppDataSource.getRepository(Product).find({ ...searchOptions });
     return data;
   }
+
+  public async getById(id: string): Promise<IProduct | null> {
+    const productRepository = AppDataSource.getRepository(Product);
+
+    let productQueryBuilder;
+    productQueryBuilder = productRepository.createQueryBuilder('category').where('category.id = :id', { id });
+
+    const product = await productQueryBuilder.getOne();
+    if (!product) {
+      throw {
+        message: 'product does not exist',
+        status: 404,
+      };
+    }
+    return product;
+  }
 }
