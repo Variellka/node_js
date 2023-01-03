@@ -1,0 +1,595 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Online game shop",
+    "version": "1.0.0",
+    "contact": {
+      "email": "variellka@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Returns all products",
+        "parameters": [
+          {
+            "name": "displayName",
+            "in": "query",
+            "description": "Returns products with exact displayName",
+            "schema": {
+              "type": "string",
+              "example": "deus-ex"
+            }
+          },
+          {
+            "name": "minRating",
+            "in": "query",
+            "description": "Returns products with rating in query or above",
+            "schema": {
+              "type": "number",
+              "example": 9
+            }
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "Returns products with price in range",
+            "schema": {
+              "type": "string",
+              "example": "40-100"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Returns next page of products",
+            "schema": {
+              "type": "number",
+              "example": 10
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Returns limit number of products",
+            "schema": {
+              "type": "number",
+              "example": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One or more fields in query are invalid"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "description": "Returns all categories",
+        "responses": {
+          "200": {
+            "description": "A list of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No category was found"
+          }
+        }
+      }
+    },
+    "/categories/{_id}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "description": "Returns category by ID",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "Category to return",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "includeProducts",
+            "in": "query",
+            "description": "Category to return with products",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "includeTop3Products",
+            "in": "query",
+            "description": "Category to return with products sorting by rating",
+            "schema": {
+              "type": "string",
+              "example": "top"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category founded by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Category"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CategoryWithProducts"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "One or more fields in query are invalid"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "Registration and Authorization"
+        ],
+        "description": "User registration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already existed"
+          }
+        }
+      }
+    },
+    "/authenticate": {
+      "post": {
+        "tags": [
+          "Registration and Authorization"
+        ],
+        "description": "User authorization",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "user"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "ZRyto4etGWclXJjJhlu4Dr4nAKJQbk6fZCBhbPHjEbPYe9dlzpmTGHV3Xy28yjX0oaJgcFnglCdWaqISiKR9eg8tkbsoy7oGj7LBtpMgfbGNValOceyTkbt31AjbCsIyAQjFerOTn8JxUlf2Z67phR87FxEKKcp3J4NmlBYJFFMardkc4fPRxTR8ODQ3O27BNih3Pdj8K06F1VUsfPLSstiEt20RnSXa9PyhlnHfkEtG7R5CpRI6u4fZFh7kzYnI"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "example": "ZRyto4etGWclXJjJhlu4Dr4nAKJQbk6fZCBhbPHjEbPYe9dlzpmTGHV3Xy28yjX0oaJgcFnglCdWaqISiKR9eg8tkbsoy7oGj7LBtpMgfbGNValOceyTkbt31AjbCsIyAQjFerOTn8JxUlf2Z67phR87FxEKKcp3J4NmlBYJFFMardkc4fPRxTR8ODQ3O27BNih3Pdj8K06F1VUsfPLSstiEt20RnSXa9PyhlnHfkEtG7R5CpRI6u4fZFh7kzYnI"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing credentials"
+          }
+        }
+      }
+    },
+    "/token": {
+      "post": {
+        "tags": [
+          "Registration and Authorization"
+        ],
+        "description": "Refresh a token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "refreshToken": {
+                    "type": "string",
+                    "example": "ZRyto4etGWclXJjJhlu4Dr4nAKJQbk6fZCBhbPHjEbPYe9dlzpmTGHV3Xy28yjX0oaJgcFnglCdWaqISiKR9eg8tkbsoy7oGj7LBtpMgfbGNValOceyTkbt31AjbCsIyAQjFerOTn8JxUlf2Z67phR87FxEKKcp3J4NmlBYJFFMardkc4fPRxTR8ODQ3O27BNih3Pdj8K06F1VUsfPLSstiEt20RnSXa9PyhlnHfkEtG7R5CpRI6u4fZFh7kzYnI"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully refreshed token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "user"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "ZRyto4etGWclXJjJhlu4Dr4nAKJQbk6fZCBhbPHjEbPYe9dlzpmTGHV3Xy28yjX0oaJgcFnglCdWaqISiKR9eg8tkbsoy7oGj7LBtpMgfbGNValOceyTkbt31AjbCsIyAQjFerOTn8JxUlf2Z67phR87FxEKKcp3J4NmlBYJFFMardkc4fPRxTR8ODQ3O27BNih3Pdj8K06F1VUsfPLSstiEt20RnSXa9PyhlnHfkEtG7R5CpRI6u4fZFh7kzYnI"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing credentials"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Returns profile if user is authorized",
+        "responses": {
+          "200": {
+            "description": "User profile page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Allow user to change their firstName and LastName",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "Ivan"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Sidorov"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully changed data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/profile/password": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Allow user to change their password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "56789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully changed password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Password field is wrong"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "_id",
+          "displayName",
+          "createdAt",
+          "totalRating",
+          "price"
+        ],
+        "properties": {
+          "_id": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "example": 1
+          },
+          "displayName": {
+            "type": "string",
+            "example": "deus-ex"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-17T17:04:50.444Z"
+          },
+          "totalRating": {
+            "type": "string",
+            "example": 9
+          },
+          "price": {
+            "type": "string",
+            "example": 40
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "_id",
+          "displayName",
+          "createdAt"
+        ],
+        "properties": {
+          "_id": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "example": 1
+          },
+          "displayName": {
+            "type": "string",
+            "example": "PC"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-17T17:04:50.427Z"
+          }
+        }
+      },
+      "CategoryWithProducts": {
+        "type": "object",
+        "required": [
+          "_id",
+          "displayName",
+          "createdAt"
+        ],
+        "properties": {
+          "_id": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "example": 1
+          },
+          "displayName": {
+            "type": "string",
+            "example": "PC"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-17T17:04:50.427Z"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "required": [
+          "_id",
+          "username",
+          "password",
+          "firstName",
+          "lastName"
+        ],
+        "properties": {
+          "_id": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "example": "user"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          }
+        }
+      }
+    }
+  }
+}

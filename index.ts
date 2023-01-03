@@ -4,7 +4,11 @@ import bodyParser from 'body-parser';
 import { ProductRouter, CategoryRouter, AuthRouter, ProfileRouter } from './src/routes';
 import { database } from './src';
 import logger from './src/helpers/logger';
+import swaggerUi from 'swagger-ui-express';
+const swaggerDocument = require('./swagger.json');
+require('dotenv').config();
 import './src/config/passport';
+
 database.connect();
 
 const app = express();
@@ -35,6 +39,9 @@ ProductRouter(router);
 CategoryRouter(router);
 AuthRouter(router);
 ProfileRouter(router);
+
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 app.listen(PORT, () => {
   logger.log({
