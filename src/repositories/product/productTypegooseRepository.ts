@@ -60,9 +60,15 @@ export default class ProductTypegooseRepository implements IProductTypegooseRepo
 
   public async getById(id: string): Promise<IProduct | null> {
     const objectId = new mongoose.Types.ObjectId(id);
-    const data: IProduct | null = await ProductModel.findOne({
+    const product: IProduct | null = await ProductModel.findOne({
       _id: objectId,
     });
-    return data;
+    if (!product) {
+      throw {
+        message: 'product does not exist',
+        status: 404,
+      };
+    }
+    return product;
   }
 }

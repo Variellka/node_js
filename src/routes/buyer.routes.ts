@@ -1,8 +1,9 @@
 import { Router, Request, Response } from 'express';
+import jwtCheck from '../middlewares/jwtCheck';
 import { ProductRepository } from '../repositories/productRepository';
 
 export const BuyerRouter = (router: Router): void => {
-  router.get('/products/:id', async (req: Request, res: Response) => {
+  router.post('/products/:id/rate', jwtCheck, async (req: Request, res: Response) => {
     try {
       const product = await ProductRepository.getById(req.params.id);
       res.status(200).send(product);

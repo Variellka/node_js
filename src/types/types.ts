@@ -8,6 +8,7 @@ export interface IProduct {
   totalRating: number;
   price: number;
   categories: ICategory[] | Ref<ICategory>[];
+  ratings: IRating[];
 }
 
 export interface IProductMongo {
@@ -17,6 +18,7 @@ export interface IProductMongo {
   totalRating: number;
   price: number;
   categories: Ref<ICategory>[];
+  ratings: IRating[];
 }
 
 export interface IProductPostgres {
@@ -26,6 +28,7 @@ export interface IProductPostgres {
   totalRating: number;
   price: number;
   categories: ICategory[];
+  ratings: IRating[];
 }
 
 export interface ICategory {

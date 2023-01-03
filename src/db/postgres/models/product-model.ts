@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, Index } from 'typeorm';
-import { ICategoryPostgres, IProductPostgres } from '../../../types/types';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, Index, OneToMany } from 'typeorm';
+import { ICategoryPostgres, IProductPostgres, IRating } from '../../../types/types';
 import { Category } from './category-model';
+import { Rating } from './rating-model';
 
 @Entity('product')
 export class Product implements IProductPostgres {
@@ -14,7 +15,7 @@ export class Product implements IProductPostgres {
   @Column()
   createdAt!: Date;
 
-  @Column()
+  @Column({ default: 0 })
   totalRating!: number;
 
   @ManyToMany(() => Category, (category) => category.products, {
@@ -25,4 +26,7 @@ export class Product implements IProductPostgres {
 
   @Column()
   price!: number;
+
+  @OneToMany(() => Rating, (rating) => rating.product)
+  ratings: IRating[];
 }
