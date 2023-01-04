@@ -39,7 +39,7 @@ passport.use(
             return done(null, false, {
               message: 'something went wrong',
             });
-          return done(null, account);
+          return done(null, { username: account.username, id: account._id });
         })
         .catch((err) => done(err));
     }

@@ -1,6 +1,6 @@
 import { MoreThanOrEqual, Between } from 'typeorm';
 import { AppDataSource } from '../../db/postgres';
-import { IProduct, IProductTypeOrmRepository, QueryObject, Result } from '../../types/types';
+import { IProduct, IProductTypeOrmRepository, IRating, QueryObject, Result } from '../../types/types';
 import { Product } from '../../db/postgres/models/product-model';
 import { validateProductQuery } from '../../helpers/queryErrorHandlers/product';
 
@@ -40,6 +40,7 @@ const productSearchQueryHandler = (query?: QueryObject) => {
 };
 
 export default class ProductTypeOrmRepository implements IProductTypeOrmRepository {
+  rateProduct: (productId: string, ratingObj: IRating) => Promise<IProduct | null>;
   public async getAll(query: QueryObject | undefined): Promise<IProduct[]> {
     const searchOptions = productSearchQueryHandler(query);
     const data: IProduct[] = await AppDataSource.getRepository(Product).find({ ...searchOptions });

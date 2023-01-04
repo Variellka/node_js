@@ -81,17 +81,22 @@ export interface IAccount {
   lastName: string;
 }
 
+export interface ILoggedUser {
+  id: ObjectId | string;
+  username: string;
+}
+
 export interface IRating {
   _id?: string;
   userId: ObjectId | string;
   rating: number;
-  product?: IProduct;
+  productId?: string;
 }
 
 interface ProductRepository<T> {
   getAll: (query?: QueryObject) => Promise<T[]>;
   getById: (id: any) => Promise<IProduct | null>;
-  // rateProduct: (productId: string, ratingObj: IRating) => Promise<IProduct | null>;
+  rateProduct: (productId: string, ratingObj: IRating) => Promise<IProduct | null>;
 }
 
 interface CategoryRepository<T> {
