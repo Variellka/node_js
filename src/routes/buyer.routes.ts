@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import jwtCheck from '../middlewares/jwtCheck';
 import { ProductRepository } from '../repositories/productRepository';
-import { ILoggedUser, IRating } from '../types/types';
+import { ILoggedUser, IProduct, IRating } from '../types/types';
 
 export const BuyerRouter = (router: Router): void => {
   router.post('/products/:id/rate', jwtCheck, async (req: Request, res: Response) => {
@@ -12,7 +12,7 @@ export const BuyerRouter = (router: Router): void => {
         const ratingObj: IRating = {
           userId: (req.user as ILoggedUser).id,
           rating: rating,
-          productId: product._id?.toString(),
+          product: product as IProduct,
         };
         const updatedProduct = await ProductRepository.rateProduct(req.params.id, ratingObj);
         res.status(200).send(updatedProduct);

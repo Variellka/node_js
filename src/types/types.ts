@@ -90,7 +90,7 @@ export interface IRating {
   _id?: string;
   userId: ObjectId | string;
   rating: number;
-  productId?: string;
+  product: IProduct;
 }
 
 interface ProductRepository<T> {

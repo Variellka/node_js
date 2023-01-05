@@ -28,5 +28,5 @@ export class Product implements IProductPostgres {
   price!: number;
 
   @OneToMany(() => Rating, (rating) => rating.product)
-  ratings: IRating[];
+  ratings!: IRating[];
 }

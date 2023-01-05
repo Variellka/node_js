@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, JoinTable } from 'typeorm';
 import { IProduct, IRating } from '../../../types/types';
 import { Product } from './product-model';
 
@@ -6,15 +6,15 @@ import { Product } from './product-model';
 export class Rating implements IRating {
   @Index({ unique: true })
   @PrimaryGeneratedColumn()
-  _id: string;
+  _id!: string;
 
   @Index('userId rating')
   @Column()
-  userId: string;
+  userId!: string;
 
   @Column()
-  rating: number;
+  rating!: number;
 
   @ManyToOne(() => Product, (product) => product.ratings)
-  product: IProduct;
+  product!: IProduct;
 }
