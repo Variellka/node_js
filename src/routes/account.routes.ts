@@ -40,7 +40,7 @@ export const AuthRouter = (router: Router): void => {
           res.send(err);
         }
 
-        const token = jwt.sign(JSON.parse(JSON.stringify(account)), SECRET, { expiresIn: 300 });
+        const token = jwt.sign(JSON.parse(JSON.stringify(account)), SECRET, { expiresIn: 1000 });
         const refreshToken = randtoken.uid(256);
         refreshTokens[refreshToken] = account.username;
         return res.json({

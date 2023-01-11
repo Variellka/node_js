@@ -1,4 +1,5 @@
-import { IProduct, IProductTypegooseRepository, QueryObject, Result } from '../../types/types';
+import { mongoose } from '@typegoose/typegoose';
+import { IProduct, IProductTypegooseRepository, QueryObject, Result, IRating } from '../../types/types';
 import { ProductModel } from '../../db/mongodb/models/product-model';
 import { validateProductQuery } from '../../helpers/queryErrorHandlers/product';
 
@@ -55,5 +56,39 @@ export default class ProductTypegooseRepository implements IProductTypegooseRepo
       .limit(paginationOptions.limit);
 
     return data;
+  }
+
+  public async getById(id: string): Promise<IProduct | null> {
+    const objectId = new mongoose.Types.ObjectId(id);
+    const product: IProduct | null = await ProductModel.findOne({
+      _id: objectId,
+    });
+    if (!product) {
+      throw {
+        message: 'product does not exist',
+        status: 404,
+      };
+    }
+    return product;
+  }
+
+  public async rateProduct(productId: string, ratingObject: IRating): Promise<IProduct | null> {
+    const product: IProduct | null = await ProductModel.findOneAndUpdate(
+      { _id: productId, 'ratings.userId': ratingObject.userId },
+      { $set: { 'ratings.$.rating': ratingObject.rating } }
+    );
+
+    if (!product) {
+      await ProductModel.findOneAndUpdate({ _id: productId }, { $push: { ratings: ratingObject } });
+    }
+
+    const [{ totalRating }] = await ProductModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(productId) } },
+      { $project: { totalRating: { $avg: '$ratings.rating' } } },
+    ]);
+
+    await ProductModel.findOneAndUpdate({ _id: productId }, { $set: { totalRating } });
+
+    return await this.getById(productId);
   }
 }

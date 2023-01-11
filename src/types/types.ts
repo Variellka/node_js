@@ -8,6 +8,7 @@ export interface IProduct {
   totalRating: number;
   price: number;
   categories: ICategory[] | Ref<ICategory>[];
+  ratings: IRating[];
 }
 
 export interface IProductMongo {
@@ -17,6 +18,7 @@ export interface IProductMongo {
   totalRating: number;
   price: number;
   categories: Ref<ICategory>[];
+  ratings: IRating[];
 }
 
 export interface IProductPostgres {
@@ -26,6 +28,7 @@ export interface IProductPostgres {
   totalRating: number;
   price: number;
   categories: ICategory[];
+  ratings: IRating[];
 }
 
 export interface ICategory {
@@ -78,8 +81,22 @@ export interface IAccount {
   lastName: string;
 }
 
+export interface ILoggedUser {
+  id: ObjectId | string;
+  username: string;
+}
+
+export interface IRating {
+  _id?: string;
+  userId: ObjectId | string;
+  rating: number;
+  product: IProduct;
+}
+
 interface ProductRepository<T> {
   getAll: (query?: QueryObject) => Promise<T[]>;
+  getById: (id: any) => Promise<IProduct | null>;
+  rateProduct: (productId: string, ratingObj: IRating) => Promise<IProduct | null>;
 }
 
 interface CategoryRepository<T> {
