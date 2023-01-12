@@ -24,4 +24,17 @@ export const BuyerRouter = (router: Router): void => {
       });
     }
   });
+
+  router.get('/order-list'),
+    // jwtCheck,
+    async (req: Request, res: Response) => {
+      try {
+        res.status(200).send('hello');
+      } catch (err: any) {
+        res.status(err.status || 500).send({
+          status: err.status,
+          message: err.message,
+        });
+      }
+    };
 };

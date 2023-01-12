@@ -4,6 +4,7 @@ import { Product } from './models/product-model';
 import { Category } from './models/category-model';
 import { Account } from './models/account-model';
 import { Rating } from './models/rating-model';
+import { OrderList } from './models/order-list-model';
 import logger from './../../helpers/logger';
 
 export const AppDataSource = new DataSource({
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: process.env.POSTGRES_USER as string,
   password: process.env.POSTGRES_PASS as string,
   database: process.env.POSTGRES_DB_NAME as string,
-  entities: [Category, Product, Account, Rating],
+  entities: [Category, Product, Account, Rating, OrderList],
   logging: true,
   synchronize: true,
 });

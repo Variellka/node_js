@@ -93,6 +93,32 @@ export interface IRating {
   product: IProduct;
 }
 
+export interface IProductQuantity {
+  productId: string;
+  quantity: number;
+}
+
+export interface IOrderListMongo {
+  _id?: ObjectId;
+  user: Ref<IAccount>;
+  products: Ref<IProductMongo>[];
+  productQuantity: IProductQuantity;
+}
+
+export interface IOrderListPostgres {
+  _id?: string;
+  user: IAccount;
+  products: IProductPostgres[];
+  productQuantity: IProductQuantity;
+}
+
+export interface IOrderList {
+  _id?: ObjectId | string;
+  user: IAccount | Ref<IAccount>;
+  products: Ref<IProductMongo>[] | IProductPostgres[];
+  productQuantity: IProductQuantity;
+}
+
 interface ProductRepository<T> {
   getAll: (query?: QueryObject) => Promise<T[]>;
   getById: (id: any) => Promise<IProduct | null>;
@@ -112,9 +138,17 @@ interface AccountRepository<T> {
   delete: (entity: T) => Promise<boolean>;
 }
 
+interface OrderRepository<T> {
+  get: () => Promise<T[]>;
+  create: (entity: T) => Promise<T>;
+  update: (entity: T) => Promise<boolean>;
+  delete: (entity: T) => Promise<boolean>;
+}
+
 export interface IProductRepository extends ProductRepository<IProduct> {}
 export interface ICategoryRepository extends CategoryRepository<ICategory> {}
 export interface IAccountRepository extends AccountRepository<IAccount> {}
+export interface IOrderRepository extends OrderRepository<IOrderList> {}
 
 export interface IProductTypeOrmRepository extends IProductRepository {}
 export interface IProductTypegooseRepository extends IProductRepository {}
@@ -124,3 +158,6 @@ export interface ICategoryTypegooseRepository extends ICategoryRepository {}
 
 export interface IAccountTypeOrmRepository extends IAccountRepository {}
 export interface IAccountTypegooseRepository extends IAccountRepository {}
+
+export interface IOrderTypeOrmRepository extends IOrderRepository {}
+export interface IOrderTypegooseRepository extends IOrderRepository {}
