@@ -2,7 +2,8 @@ import { connectMongoDb } from './db/mongodb';
 import { connectPostgreSQL } from './db/postgres';
 import { createProductTypeOrmRepository, createProductTypegooseRepository } from './repositories/productRepository';
 import { createCategoryTypegooseRepository, createCategoryTypeOrmRepository } from './repositories/categoryRepository';
-import { createAccountTypegooseRepository, createAccountTypeOrmRepository } from './repositories//accountRepository';
+import { createAccountTypegooseRepository, createAccountTypeOrmRepository } from './repositories/accountRepository';
+import { createOrderTypegooseRepository, createOrderTypeOrmRepository } from './repositories/orderRepository';
 
 const database = {
   connect,
@@ -14,11 +15,13 @@ async function connect(): Promise<void> {
     createProductTypegooseRepository();
     createCategoryTypegooseRepository();
     createAccountTypegooseRepository();
+    createOrderTypegooseRepository();
   } else {
     await connectPostgreSQL();
     createProductTypeOrmRepository();
     createCategoryTypeOrmRepository();
     createAccountTypeOrmRepository();
+    createOrderTypeOrmRepository();
   }
 }
 

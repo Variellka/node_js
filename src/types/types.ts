@@ -139,10 +139,10 @@ interface AccountRepository<T> {
 }
 
 interface OrderRepository<T> {
-  get: () => Promise<T[]>;
-  create: (entity: T) => Promise<T>;
-  update: (entity: T) => Promise<boolean>;
-  delete: (entity: T) => Promise<boolean>;
+  getByUsername: (username: string) => Promise<T | null>;
+  // create: (entity: T) => Promise<T>;
+  // update: (entity: T) => Promise<boolean>;
+  // delete: (entity: T) => Promise<boolean>;
 }
 
 export interface IProductRepository extends ProductRepository<IProduct> {}
