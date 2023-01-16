@@ -102,21 +102,21 @@ export interface IOrderListMongo {
   _id?: ObjectId;
   user: Ref<IAccount>;
   products: Ref<IProductMongo>[];
-  productQuantity: IProductQuantity;
+  productQuantity: IProductQuantity[];
 }
 
 export interface IOrderListPostgres {
   _id?: string;
   user: IAccount;
   products: IProductPostgres[];
-  productQuantity: IProductQuantity;
+  productQuantity: IProductQuantity[];
 }
 
 export interface IOrderList {
   _id?: ObjectId | string;
   user: IAccount | Ref<IAccount>;
   products: Ref<IProductMongo>[] | IProductPostgres[];
-  productQuantity: IProductQuantity;
+  productQuantity: IProductQuantity[];
 }
 
 interface ProductRepository<T> {
@@ -139,9 +139,9 @@ interface AccountRepository<T> {
 }
 
 interface OrderRepository<T> {
-  getByUsername: (username: string) => Promise<T | null>;
-  // create: (entity: T) => Promise<T>;
-  // update: (entity: T) => Promise<boolean>;
+  getByUserId: (id: string) => Promise<T | null>;
+  create: (userId: string, productId: string, quantity: number) => Promise<T>;
+  update: (userId: string, productId: string, quantity: number) => Promise<T | null>;
   // delete: (entity: T) => Promise<boolean>;
 }
 

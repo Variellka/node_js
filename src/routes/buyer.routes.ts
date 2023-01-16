@@ -28,13 +28,35 @@ export const BuyerRouter = (router: Router): void => {
 
   router.get('/order-list', jwtCheck, async (req: Request, res: Response) => {
     try {
-      const username = (req.user as ILoggedUser).username;
-      if (username) {
-        console.log(OrderRepository);
-        const order = await OrderRepository.getByUsername(username);
+      const id = (req.user as ILoggedUser).id;
+      if (id) {
+        const order = await OrderRepository.getByUserId(id.toString());
         if (order) {
           res.send(order);
         } else res.status(200).send('no products in order');
+      }
+    } catch (err: any) {
+      res.status(err.status || 500).send({
+        status: err.status,
+        message: err.message,
+      });
+    }
+  });
+
+  router.post('/order-list', jwtCheck, async (req: Request, res: Response) => {
+    try {
+      const { productId, quantity } = req.body;
+      const { username, id } = req.user as ILoggedUser;
+      if (username) {
+        const order = await OrderRepository.getByUserId(id.toString());
+        // console.log(order);
+        if (order) {
+          const updatedOrder = await OrderRepository.update(id.toString(), productId, quantity);
+          res.send(updatedOrder);
+        } else {
+          const newOrder = await OrderRepository.create(id.toString(), productId, quantity);
+          res.send(newOrder);
+        }
       }
     } catch (err: any) {
       res.status(err.status || 500).send({

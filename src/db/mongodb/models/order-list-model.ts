@@ -12,7 +12,7 @@ export class OrderList implements IOrderListMongo {
   public products: Ref<IProductMongo>[];
 
   @prop()
-  public productQuantity: IProductQuantity;
+  public productQuantity: IProductQuantity[];
 }
 
 export const OrderListModel = getModelForClass(OrderList);

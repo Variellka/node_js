@@ -17,5 +17,5 @@ export class OrderList implements IOrderListPostgres {
   products!: IProductPostgres[];
 
   @Column()
-  productQuantity!: IProductQuantity;
+  productQuantity!: IProductQuantity[];
 }
