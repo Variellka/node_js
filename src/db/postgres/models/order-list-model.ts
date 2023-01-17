@@ -9,7 +9,6 @@ export class OrderList implements IOrderListPostgres {
   @PrimaryGeneratedColumn()
   _id!: string;
 
-  @Index('userId rating')
   @OneToOne(() => Account, (account) => account)
   user!: IAccount;
 

@@ -7,10 +7,20 @@ import { OrderList } from '../../db/postgres/models/order-list-model';
 export default class OrderTypeOrmRepository implements IOrderTypeOrmRepository {
   update: (userId: string, productId: string, quantity: number) => Promise<IOrderList | null>;
   create: (username: string, productId: string, quantity: number) => Promise<IOrderList>;
-  getByUserId: (id: string) => Promise<IOrderList | null>;
-  //   public async getByUsername(username: string): Promise<IOrderList | null> {
-  //     const user: IAccount | null = await AppDataSource.getRepository(Account).findOne({ where: { username } });
-  //     const order: IOrderList | null = await AppDataSource.getRepository(OrderList).findOne({ where: { user : user} });
-  //     return order ? order : null;
-  //   }
+
+  public async getByUserId(id: string): Promise<IOrderList | null> {
+    const orderRepository = AppDataSource.getRepository(OrderList);
+
+    let orderQueryBuilder;
+    orderQueryBuilder = orderRepository.createQueryBuilder('order-list').where('order-list.id = :id', { id });
+
+    const order = await orderQueryBuilder.getOne();
+    if (!orderQueryBuilder) {
+      throw {
+        message: 'no products in order',
+        status: 200,
+      };
+    }
+    return order;
+  }
 }

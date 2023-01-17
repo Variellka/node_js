@@ -27,12 +27,6 @@ export default class OrderTypegooseRepository implements IOrderTypegooseReposito
 
   public async update(userId: string, productId: string, quantity: number): Promise<IOrderList | null> {
     const productObjectId = new mongoose.Types.ObjectId(productId);
-    const userObjectId = new mongoose.Types.ObjectId(userId);
-    // const order: IOrderList | null = await OrderListModel.findOneAndUpdate(
-    //   { 'user._id': userObjectId, 'products._id': productObjectId },
-    //   { $set: { productsQuantity: await ProductModel.findOne({ _id: productObjectId }) } }
-    // );
-
     const order: IOrderList | null = await OrderListModel.findOneAndUpdate(
       {
         user: userId,
