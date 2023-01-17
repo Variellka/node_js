@@ -93,30 +93,33 @@ export interface IRating {
   product: IProduct;
 }
 
-export interface IProductQuantity {
-  productId: string;
+export interface IOrderListMangoProducts {
   quantity: number;
+  product: Ref<IProductMongo>;
 }
-
+export interface IOrderListPostgresProducts {
+  _id?: string;
+  quantity: number;
+  product: IProductPostgres;
+}
+export interface IOrderListProducts {
+  quantity: number;
+  product: Ref<IProductMongo> | IProductPostgres;
+}
 export interface IOrderListMongo {
   _id?: ObjectId;
   user: Ref<IAccount>;
-  products: Ref<IProductMongo>[];
-  productQuantity: IProductQuantity[];
+  products: IOrderListMangoProducts[];
 }
-
 export interface IOrderListPostgres {
   _id?: string;
   user: IAccount;
-  products: IProductPostgres[];
-  productQuantity: IProductQuantity[];
+  products: IOrderListPostgresProducts[];
 }
-
 export interface IOrderList {
   _id?: ObjectId | string;
   user: IAccount | Ref<IAccount>;
-  products: Ref<IProductMongo>[] | IProductPostgres[];
-  productQuantity: IProductQuantity[];
+  products: IOrderListProducts[];
 }
 
 interface ProductRepository<T> {

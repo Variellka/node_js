@@ -1,7 +1,7 @@
 import { Column, Entity, Index, OneToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { IAccount, IOrderListPostgres, IProduct, IProductPostgres, IProductQuantity } from '../../../types/types';
+import { IAccount, IOrderListPostgres, IOrderListPostgresProducts } from '../../../types/types';
 import { Account } from './account-model';
-import { Product } from './product-model';
+import { OrderListProducts } from './order-list-products-model';
 
 @Entity('order-list')
 export class OrderList implements IOrderListPostgres {
@@ -12,9 +12,6 @@ export class OrderList implements IOrderListPostgres {
   @OneToOne(() => Account, (account) => account)
   user!: IAccount;
 
-  @OneToMany(() => Product, (product) => product)
-  products!: IProductPostgres[];
-
-  @Column()
-  productQuantity!: IProductQuantity[];
+  @OneToMany(() => OrderListProducts, (orderListProducts) => orderListProducts)
+  products!: IOrderListPostgresProducts[];
 }

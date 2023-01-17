@@ -49,7 +49,6 @@ export const BuyerRouter = (router: Router): void => {
       const { username, id } = req.user as ILoggedUser;
       if (username) {
         const order = await OrderRepository.getByUserId(id.toString());
-        // console.log(order);
         if (order) {
           const updatedOrder = await OrderRepository.update(id.toString(), productId, quantity);
           res.send(updatedOrder);

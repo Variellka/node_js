@@ -1,5 +1,5 @@
 import { prop, getModelForClass, Ref, index } from '@typegoose/typegoose';
-import { IAccount, IProductMongo, IProductQuantity, IOrderListMongo } from './../../../types/types';
+import { IAccount, IOrderListMangoProducts, IOrderListMongo } from './../../../types/types';
 import { Account } from './account-model';
 import { Product } from './product-model';
 
@@ -8,11 +8,8 @@ export class OrderList implements IOrderListMongo {
   @prop({ ref: () => Account })
   public user: Ref<IAccount>;
 
-  @prop({ ref: () => Product })
-  public products: Ref<IProductMongo>[];
-
-  @prop()
-  public productQuantity: IProductQuantity[];
+  @prop({ default: [] })
+  public products: IOrderListMangoProducts[];
 }
 
 export const OrderListModel = getModelForClass(OrderList);

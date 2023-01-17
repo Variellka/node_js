@@ -15,10 +15,9 @@ export default class OrderTypegooseRepository implements IOrderTypegooseReposito
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const order = await new OrderListModel({
       user: await AccountModel.findOne({ _id: userObjectId }),
-      products: [await ProductModel.findOne({ _id: productObjectId })],
-      productQuantity: {
-        productId,
+      products: {
         quantity,
+        product: await ProductModel.findOne({ _id: productObjectId }),
       },
     }).save();
 
@@ -28,20 +27,14 @@ export default class OrderTypegooseRepository implements IOrderTypegooseReposito
   public async update(userId: string, productId: string, quantity: number): Promise<IOrderList | null> {
     const productObjectId = new mongoose.Types.ObjectId(productId);
     const order: IOrderList | null = await OrderListModel.findOneAndUpdate(
-      {
-        user: userId,
-        products: productId,
-        'productQuantity.productId': productId,
-      },
-      { $set: { 'productQuantity.$.quantity': quantity } }
+      { user: userId, 'products.product._id': productObjectId },
+      { $set: { 'products.$.quantity': quantity } }
     );
+
     if (!order) {
       const product = await ProductModel.findOne({ _id: productObjectId });
       if (product) {
-        await OrderListModel.findOneAndUpdate(
-          { user: userId },
-          { $push: { products: product, productQuantity: { productId, quantity } } }
-        );
+        await OrderListModel.findOneAndUpdate({ user: userId }, { $push: { products: { quantity, product } } });
       }
     }
 
