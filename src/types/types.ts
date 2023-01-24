@@ -101,6 +101,7 @@ export interface IOrderListPostgresProducts {
   _id?: string;
   quantity: number;
   product: IProductPostgres;
+  order: IOrderListPostgres;
 }
 export interface IOrderListProducts {
   _id?: ObjectId | string;
@@ -143,9 +144,9 @@ interface AccountRepository<T> {
 }
 
 interface OrderRepository<T> {
-  getByUserId: (id: string) => Promise<T | null>;
-  create: (userId: string, productId: string, quantity: number) => Promise<T | null>;
-  update: (userId: string, productId: string, quantity: number) => Promise<T | null>;
+  getByUserId: (id: string) => Promise<IOrderListProducts[] | null>;
+  create: (userId: string, productId: string, quantity: number) => Promise<IOrderListProducts[] | null>;
+  update: (userId: string, productId: string, quantity: number) => Promise<IOrderListProducts[] | null>;
   // delete: (entity: T) => Promise<boolean>;
 }
 

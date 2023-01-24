@@ -1,16 +1,19 @@
 import { mongoose } from '@typegoose/typegoose';
-import { IAccount, IOrderList, IOrderTypegooseRepository } from '../../types/types';
+import { IAccount, IOrderList, IOrderListProducts, IOrderTypegooseRepository } from '../../types/types';
 import { OrderListModel } from '../../db/mongodb/models/order-list-model';
 import { AccountModel } from '../../db/mongodb/models/account-model';
 import { ProductModel } from '../../db/mongodb/models/product-model';
 
 export default class OrderTypegooseRepository implements IOrderTypegooseRepository {
-  public async getByUserId(id: string): Promise<IOrderList | null> {
+  public async getByUserId(id: string): Promise<IOrderListProducts[] | null> {
     const order: IOrderList | null = await OrderListModel.findOne({ user: id });
-    return order;
+    if (order) {
+      return order.products;
+    }
+    return null;
   }
 
-  public async create(userId: string, productId: string, quantity: number): Promise<IOrderList | null> {
+  public async create(userId: string, productId: string, quantity: number): Promise<IOrderListProducts[] | null> {
     const productObjectId = new mongoose.Types.ObjectId(productId);
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const order = await new OrderListModel({
@@ -21,10 +24,10 @@ export default class OrderTypegooseRepository implements IOrderTypegooseReposito
       },
     }).save();
 
-    return order;
+    return order.products;
   }
 
-  public async update(userId: string, productId: string, quantity: number): Promise<IOrderList | null> {
+  public async update(userId: string, productId: string, quantity: number): Promise<IOrderListProducts[] | null> {
     const productObjectId = new mongoose.Types.ObjectId(productId);
     const order: IOrderList | null = await OrderListModel.findOneAndUpdate(
       { user: userId, 'products.product._id': productObjectId },
