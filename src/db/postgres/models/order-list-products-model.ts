@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToOne, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
 import { IOrderListPostgresProducts, IProductPostgres } from '../../../types/types';
 import { Product } from './product-model';
 
@@ -11,6 +11,7 @@ export class OrderListProducts implements IOrderListPostgresProducts {
   @Column()
   quantity!: number;
 
-  @ManyToOne(() => Product, (product) => product)
+  @OneToOne(() => Product)
+  @JoinColumn()
   product!: IProductPostgres;
 }

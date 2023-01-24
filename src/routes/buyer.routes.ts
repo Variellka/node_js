@@ -51,10 +51,10 @@ export const BuyerRouter = (router: Router): void => {
         const order = await OrderRepository.getByUserId(id.toString());
         if (order) {
           const updatedOrder = await OrderRepository.update(id.toString(), productId, quantity);
-          res.send(updatedOrder);
+          res.send(updatedOrder?.products);
         } else {
           const newOrder = await OrderRepository.create(id.toString(), productId, quantity);
-          res.send(newOrder);
+          res.send(newOrder?.products);
         }
       }
     } catch (err: any) {

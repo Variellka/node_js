@@ -103,6 +103,7 @@ export interface IOrderListPostgresProducts {
   product: IProductPostgres;
 }
 export interface IOrderListProducts {
+  _id?: ObjectId | string;
   quantity: number;
   product: Ref<IProductMongo> | IProductPostgres;
 }
@@ -143,7 +144,7 @@ interface AccountRepository<T> {
 
 interface OrderRepository<T> {
   getByUserId: (id: string) => Promise<T | null>;
-  create: (userId: string, productId: string, quantity: number) => Promise<T>;
+  create: (userId: string, productId: string, quantity: number) => Promise<T | null>;
   update: (userId: string, productId: string, quantity: number) => Promise<T | null>;
   // delete: (entity: T) => Promise<boolean>;
 }

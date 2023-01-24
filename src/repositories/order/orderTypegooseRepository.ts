@@ -10,7 +10,7 @@ export default class OrderTypegooseRepository implements IOrderTypegooseReposito
     return order;
   }
 
-  public async create(userId: string, productId: string, quantity: number): Promise<IOrderList> {
+  public async create(userId: string, productId: string, quantity: number): Promise<IOrderList | null> {
     const productObjectId = new mongoose.Types.ObjectId(productId);
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const order = await new OrderListModel({

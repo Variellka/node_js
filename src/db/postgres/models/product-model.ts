@@ -27,6 +27,8 @@ export class Product implements IProductPostgres {
   @Column()
   price!: number;
 
-  @OneToMany(() => Rating, (rating) => rating.product)
+  @OneToMany(() => Rating, (rating) => rating.product, {
+    cascade: true,
+  })
   ratings!: IRating[];
 }
