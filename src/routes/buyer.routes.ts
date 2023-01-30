@@ -64,4 +64,21 @@ export const BuyerRouter = (router: Router): void => {
       });
     }
   });
+
+  router.post('/order-list/clear', jwtCheck, async (req: Request, res: Response) => {
+    try {
+      const id = (req.user as ILoggedUser).id;
+      if (id) {
+        const orderlistCleared = await OrderRepository.delete(id.toString());
+        if (orderlistCleared) {
+          res.send('you deleted all products from order-list');
+        }
+      }
+    } catch (err: any) {
+      res.status(err.status || 500).send({
+        status: err.status,
+        message: err.message,
+      });
+    }
+  });
 };

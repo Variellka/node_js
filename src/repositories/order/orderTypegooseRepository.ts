@@ -5,6 +5,7 @@ import { AccountModel } from '../../db/mongodb/models/account-model';
 import { ProductModel } from '../../db/mongodb/models/product-model';
 
 export default class OrderTypegooseRepository implements IOrderTypegooseRepository {
+  delete: (userId: string) => Promise<boolean>;
   public async getByUserId(id: string): Promise<IOrderListProducts[] | null> {
     const order: IOrderList | null = await OrderListModel.findOne({ user: id });
     if (order) {

@@ -147,7 +147,7 @@ interface OrderRepository<T> {
   getByUserId: (id: string) => Promise<IOrderListProducts[] | null>;
   create: (userId: string, productId: string, quantity: number) => Promise<IOrderListProducts[] | null>;
   update: (userId: string, productId: string, quantity: number) => Promise<IOrderListProducts[] | null>;
-  // delete: (entity: T) => Promise<boolean>;
+  delete: (userId: string) => Promise<boolean>;
 }
 
 export interface IProductRepository extends ProductRepository<IProduct> {}

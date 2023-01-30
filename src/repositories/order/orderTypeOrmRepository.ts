@@ -13,6 +13,18 @@ import { Product } from '../../db/postgres/models/product-model';
 import { OrderListProducts } from '../../db/postgres/models/order-list-products-model';
 
 export default class OrderTypeOrmRepository implements IOrderTypeOrmRepository {
+  public async delete(userId: string): Promise<boolean> {
+    const orderRepository = AppDataSource.getRepository(OrderList);
+    const order = await orderRepository
+      .createQueryBuilder('order-list')
+      .where('order-list.user._id = :userId', { userId })
+      .getOne();
+    if (order) {
+      await orderRepository.delete({ _id: order._id });
+    }
+    return true;
+  }
+
   public async update(userId: string, productId: string, quantity: number): Promise<IOrderListProducts[] | null> {
     const orderRepository = AppDataSource.getRepository(OrderList);
     const orderProductsRepository = AppDataSource.getRepository(OrderListProducts);
@@ -30,10 +42,20 @@ export default class OrderTypeOrmRepository implements IOrderTypeOrmRepository {
 
     if (orderProduct) {
       if (quantity) {
+        await AppDataSource.getRepository(OrderListProducts)
+          .createQueryBuilder()
+          .update(OrderListProducts)
+          .set({ quantity: quantity })
+          .where('order-list-products.order_id = :id', { id: order?._id })
+          .execute();
       } else if (!quantity) {
         await orderProductsRepository.remove(orderProduct);
+        const products = await orderProductsRepository.find();
+        if (!products.length) {
+          await this.delete(userId);
+        }
       }
-    } else if (!orderProduct) {
+    } else if (!orderProduct && quantity) {
       const product = await AppDataSource.getRepository(Product)
         .createQueryBuilder('product')
         .where('product.id = :productId', { productId })
